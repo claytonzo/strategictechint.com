@@ -12,10 +12,14 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><polygon points=%2216,2 29,9.5 29,22.5 16,30 3,22.5 3,9.5%22 fill=%22none%22 stroke=%22%234f8cff%22 stroke-width=%222.5%22/><circle cx=%2216%22 cy=%2216%22 r=%223%22 fill=%22%2338e0c8%22/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+
+  <!-- Scroll progress + Konami matrix overlay -->
+  <div id="progress" aria-hidden="true"></div>
+  <canvas id="matrix" aria-hidden="true"></canvas>
 
   <!-- Reusable logo mark -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -56,17 +60,29 @@
   <header id="top" class="hero">
     <canvas id="net" class="hero-canvas" aria-hidden="true"></canvas>
     <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-spotlight" aria-hidden="true"></div>
     <div class="hero-fade" aria-hidden="true"></div>
     <div class="container hero-inner">
-      <p class="eyebrow reveal"><span class="eyebrow-dot"></span>Independent IT &amp; Technology Consulting</p>
-      <h1 class="hero-title reveal">Technology decisions,<br><span class="accent">made with confidence.</span></h1>
-      <p class="hero-sub reveal">Fandre Technologies helps organizations cut through the noise — aligning the right technology with real business goals, then guiding the work from plan to production.</p>
-      <div class="hero-actions reveal">
-        <a href="#contact" class="btn btn-primary">Start a conversation</a>
-        <a href="#services" class="btn btn-ghost">See how I help</a>
+      <div class="hero-copy">
+        <p class="eyebrow reveal"><span class="eyebrow-dot"></span>Independent IT &amp; Technology Consulting</p>
+        <h1 class="hero-title reveal">Technology decisions,<br><span class="accent" id="morph">made with confidence.</span></h1>
+        <p class="hero-sub reveal">Fandre Technologies helps organizations cut through the noise — aligning the right technology with real business goals, then guiding the work from plan to production.</p>
+        <div class="hero-actions reveal">
+          <a href="#contact" class="btn btn-primary">Start a conversation</a>
+          <a href="#services" class="btn btn-ghost">See how I help</a>
+        </div>
+        <div class="hero-trust reveal">
+          <span>Vendor-neutral</span><i></i><span>Hands-on delivery</span><i></i><span>Work direct with the principal</span>
+        </div>
       </div>
-      <div class="hero-trust reveal">
-        <span>Vendor-neutral</span><i></i><span>Hands-on delivery</span><i></i><span>Work direct with the principal</span>
+
+      <!-- Animated terminal -->
+      <div class="terminal reveal" aria-hidden="true">
+        <div class="term-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="term-title">engagement — zsh</span>
+        </div>
+        <div class="term-body"><code id="term"></code></div>
       </div>
     </div>
     <a href="#services" class="scroll-cue" aria-label="Scroll to services"><span></span></a>
