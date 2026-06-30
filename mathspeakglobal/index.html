@@ -332,7 +332,13 @@
   </footer>
 
   <!-- Lightbox -->
-  <div id="lightbox" class="lightbox" aria-hidden="true"><img alt="" /></div>
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button class="lb-btn lb-close" aria-label="Close">&times;</button>
+    <button class="lb-btn lb-prev" aria-label="Previous photo">&#8249;</button>
+    <figure class="lb-stage"><img alt="" /></figure>
+    <button class="lb-btn lb-next" aria-label="Next photo">&#8250;</button>
+    <span class="lb-count" aria-hidden="true"></span>
+  </div>
 
   <script src="script.js"></script>
 </body>

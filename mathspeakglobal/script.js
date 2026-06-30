@@ -34,23 +34,52 @@ document.querySelectorAll('.reveal').forEach((el, i) => {
   observer.observe(el);
 });
 
-// ===== Gallery lightbox =====
+// ===== Gallery lightbox with prev/next navigation =====
 (function lightbox() {
   const box = document.getElementById('lightbox');
   if (!box) return;
   const img = box.querySelector('img');
-  document.querySelectorAll('.g-item').forEach((a) => {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      img.src = a.getAttribute('href');
-      img.alt = a.querySelector('img')?.alt || '';
-      box.classList.add('on');
-      box.setAttribute('aria-hidden', 'false');
-    });
+  const count = box.querySelector('.lb-count');
+  const items = Array.from(document.querySelectorAll('.g-item')).map((a) => ({
+    src: a.getAttribute('href'),
+    alt: a.querySelector('img')?.alt || '',
+  }));
+  let idx = 0;
+
+  function render() {
+    const it = items[idx];
+    img.src = it.src;
+    img.alt = it.alt;
+    if (count) count.textContent = `${idx + 1} / ${items.length}`;
+  }
+  function open(i) {
+    idx = i;
+    render();
+    box.classList.add('on');
+    box.setAttribute('aria-hidden', 'false');
+  }
+  function close() {
+    box.classList.remove('on');
+    box.setAttribute('aria-hidden', 'true');
+    img.src = '';
+  }
+  const step = (d) => { idx = (idx + d + items.length) % items.length; render(); };
+
+  document.querySelectorAll('.g-item').forEach((a, i) => {
+    a.addEventListener('click', (e) => { e.preventDefault(); open(i); });
   });
-  function close() { box.classList.remove('on'); box.setAttribute('aria-hidden', 'true'); img.src = ''; }
-  box.addEventListener('click', close);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  box.querySelector('.lb-prev').addEventListener('click', (e) => { e.stopPropagation(); step(-1); });
+  box.querySelector('.lb-next').addEventListener('click', (e) => { e.stopPropagation(); step(1); });
+  box.querySelector('.lb-close').addEventListener('click', (e) => { e.stopPropagation(); close(); });
+  img.addEventListener('click', (e) => e.stopPropagation()); // clicking the photo shouldn't close
+  box.addEventListener('click', close);                       // clicking the backdrop closes
+
+  document.addEventListener('keydown', (e) => {
+    if (!box.classList.contains('on')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') step(-1);
+    else if (e.key === 'ArrowRight') step(1);
+  });
 })();
 
 // ===== Console easter egg =====
